@@ -27,7 +27,7 @@ local lastInviteTime = 0;
 function BillyInviteAlert:OnLoad()
     self:RegisterEvents();
     self:RegisterSlashCmds();
-    DEFAULT_CHAT_FRAME:AddMessage("BillyInviteAlert: Loaded. Use /gia to configure.", 0.5, 1, 0.5);
+    DEFAULT_CHAT_FRAME:AddMessage("Billy's Invite Alert: Loaded. Use /bia to configure.", 0.5, 1, 0.5);
 end
 
 -- Register events
@@ -182,10 +182,10 @@ end
 
 -- Register slash commands
 function BillyInviteAlert:RegisterSlashCmds()
-    SLASH_GROUPINVITEALERT1 = "/groupinvitealert";
-    SLASH_GROUPINVITEALERT2 = "/gia";
+    SLASH_BILLYINVITEALERT1 = "/billyinvitealert";
+    SLASH_BILLYINVITEALERT2 = "/bia";
     
-    SlashCmdList["GROUPINVITEALERT"] = function(msg)
+    SlashCmdList["BILLYINVITEALERT"] = function(msg)
         BillyInviteAlert:HandleSlashCommand(msg);
     end;
 end
@@ -226,12 +226,12 @@ function BillyInviteAlert:HandleSlashCommand(msg)
         local debugStatus = BillyInviteAlertDB.debug and "Enabled" or "Disabled";
         DEFAULT_CHAT_FRAME:AddMessage("BillyInviteAlert: Debug mode " .. debugStatus, 1, 1, 0);
     else
-        DEFAULT_CHAT_FRAME:AddMessage("BillyInviteAlert Commands:", 1, 1, 0);
-        DEFAULT_CHAT_FRAME:AddMessage("/gia on - Enable the addon", 0.8, 0.8, 0.8);
-        DEFAULT_CHAT_FRAME:AddMessage("/gia off - Disable the addon", 0.8, 0.8, 0.8);
-        DEFAULT_CHAT_FRAME:AddMessage("/gia status - Show current status", 0.8, 0.8, 0.8);
-        DEFAULT_CHAT_FRAME:AddMessage("/gia msg <text> - Set custom whisper message", 0.8, 0.8, 0.8);
-        DEFAULT_CHAT_FRAME:AddMessage("/gia debug - Toggle debug logging", 0.8, 0.8, 0.8);
+        DEFAULT_CHAT_FRAME:AddMessage("Billy's Invite Alert Commands:", 1, 1, 0);
+        DEFAULT_CHAT_FRAME:AddMessage("/bia on - Enable the addon", 0.8, 0.8, 0.8);
+        DEFAULT_CHAT_FRAME:AddMessage("/bia off - Disable the addon", 0.8, 0.8, 0.8);
+        DEFAULT_CHAT_FRAME:AddMessage("/bia status - Show current status", 0.8, 0.8, 0.8);
+        DEFAULT_CHAT_FRAME:AddMessage("/bia msg <text> - Set custom whisper message", 0.8, 0.8, 0.8);
+        DEFAULT_CHAT_FRAME:AddMessage("/bia debug - Toggle debug logging", 0.8, 0.8, 0.8);
     end
 end
 
