@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: Billy's Invite Alert
+## Version: 1.0.3
+## Author: BillyBobily
+## Notes: Sends an alert when inviting a player already in a group
+## SavedVariables: BillyInviteAlertDB
+
+BillyInviteAlert.lua
