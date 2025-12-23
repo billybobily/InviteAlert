@@ -35,20 +35,13 @@ function BillyInviteAlert:RegisterEvents()
     local frame = getglobal("BillyInviteAlertFrame");
     if not frame then
         frame = CreateFrame("Frame", "BillyInviteAlertFrame");
-        DEFAULT_CHAT_FRAME:AddMessage("GIA: Created new frame", 0.5, 1, 0.5);
-    else
-        DEFAULT_CHAT_FRAME:AddMessage("GIA: Frame already exists", 0.5, 1, 0.5);
     end
     
     frame:RegisterEvent("VARIABLES_LOADED");
     frame:RegisterEvent("UI_ERROR_MESSAGE");
     frame:RegisterEvent("CHAT_MSG_SYSTEM");
-    DEFAULT_CHAT_FRAME:AddMessage("GIA: Registered events on frame", 0.5, 1, 0.5);
     
     frame:SetScript("OnEvent", function()
-        if BillyInviteAlertDB and BillyInviteAlertDB.debug then
-            DEFAULT_CHAT_FRAME:AddMessage("GIA [DEBUG]: OnEvent fired, event=" .. tostring(event), 1, 1, 0);
-        end
         BillyInviteAlert:OnEvent();
     end);
 end
@@ -72,18 +65,10 @@ function BillyInviteAlert:OnEvent()
         -- Hook functions after variables are loaded
         BillyInviteAlert:HookFunctions();
     elseif event == "UI_ERROR_MESSAGE" then
-        if BillyInviteAlertDB.debug then
-            DEFAULT_CHAT_FRAME:AddMessage("GIA [DEBUG]: UI_ERROR_MESSAGE event, arg1: " .. tostring(arg1), 1, 0, 1);
-        end
-        
         if BillyInviteAlertDB.enabled then
             self:HandleErrorMessage(arg1);
         end
     elseif event == "CHAT_MSG_SYSTEM" then
-        if BillyInviteAlertDB.debug then
-            DEFAULT_CHAT_FRAME:AddMessage("GIA [DEBUG]: CHAT_MSG_SYSTEM event, arg1: " .. tostring(arg1), 1, 0, 1);
-        end
-        
         if BillyInviteAlertDB.enabled then
             self:HandleErrorMessage(arg1);
         end
@@ -140,10 +125,6 @@ end
 
 -- Handle UI error messages
 function BillyInviteAlert:HandleErrorMessage(errorMsg)
-    if BillyInviteAlertDB.debug then
-        DEFAULT_CHAT_FRAME:AddMessage("GIA [DEBUG]: Error message: " .. tostring(errorMsg), 1, 0.5, 0);
-    end
-    
     -- Check if this is the "already in group" error
     -- In Classic WoW 1.12, this error message is: "X is already in a group"
     if errorMsg and string.find(errorMsg, "already in a group") then
@@ -152,14 +133,15 @@ function BillyInviteAlert:HandleErrorMessage(errorMsg)
         local timeSinceInvite = currentTime - lastInviteTime;
         
         if BillyInviteAlertDB.debug then
-            DEFAULT_CHAT_FRAME:AddMessage("GIA [DEBUG]: Found 'already in group' error", 0, 1, 1);
-            DEFAULT_CHAT_FRAME:AddMessage("GIA [DEBUG]: Last target: " .. tostring(lastInviteTarget) .. ", Time since: " .. string.format("%.2f", timeSinceInvite), 0, 1, 1);
+            DEFAULT_CHAT_FRAME:AddMessage("BIA [DEBUG]: Detected 'already in group' for " .. tostring(lastInviteTarget) .. " (" .. string.format("%.2f", timeSinceInvite) .. "s ago)", 0.5, 1, 1);
         end
         
         -- Only send whisper if we recently tried to invite (within 2 seconds)
         if lastInviteTarget and timeSinceInvite < 2 then
             self:SendAlertWhisper(lastInviteTarget);
             lastInviteTarget = nil; -- Reset so we don't spam
+        elseif BillyInviteAlertDB.debug then
+            DEFAULT_CHAT_FRAME:AddMessage("BIA [DEBUG]: No recent invite target or timeout expired", 1, 0.5, 0);
         end
     end
 end
@@ -173,10 +155,10 @@ function BillyInviteAlert:SendAlertWhisper(playerName)
     local message = BillyInviteAlertDB.message;
     SendChatMessage(message, "WHISPER", nil, playerName);
     
-    DEFAULT_CHAT_FRAME:AddMessage("BillyInviteAlert: Whispered " .. playerName, 0, 1, 0);
-    
     if BillyInviteAlertDB.debug then
-        DEFAULT_CHAT_FRAME:AddMessage("GIA [DEBUG]: Sent whisper to " .. playerName, 0, 1, 0);
+        DEFAULT_CHAT_FRAME:AddMessage("BIA [DEBUG]: Whispered " .. playerName, 0, 1, 0);
+    else
+        DEFAULT_CHAT_FRAME:AddMessage("Billy's Invite Alert: Whispered " .. playerName, 0, 1, 0);
     end
 end
 
