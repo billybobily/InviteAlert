@@ -88,7 +88,7 @@ function BillyInviteAlert:HookFunctions()
             lastInviteTarget = name;
             lastInviteTime = GetTime();
             if BillyInviteAlertDB.debug then
-                DEFAULT_CHAT_FRAME:AddMessage("GIA [DEBUG]: InviteByName called for " .. name, 1, 1, 0);
+                DEFAULT_CHAT_FRAME:AddMessage("BIA [DEBUG]: InviteByName called for " .. name, 1, 1, 0);
             end
         end
         Orig_InviteByName(name);
@@ -111,7 +111,7 @@ function BillyInviteAlert:HookFunctions()
                 lastInviteTarget = targetName;
                 lastInviteTime = GetTime();
                 if BillyInviteAlertDB.debug then
-                    DEFAULT_CHAT_FRAME:AddMessage("GIA [DEBUG]: UnitPopup invite for " .. targetName, 1, 1, 0);
+                    DEFAULT_CHAT_FRAME:AddMessage("BIA [DEBUG]: UnitPopup invite for " .. targetName, 1, 1, 0);
                 end
             end
         end
