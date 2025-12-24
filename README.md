@@ -14,6 +14,8 @@ When you try to invite someone who's already in a group, you get an error messag
 
 Billy's Invite Alert monitors your invite attempts and the game's error messages. When you try to invite a player who is already in a group, it automatically sends them a customizable whisper message. Simple, lightweight, and effective.
 
+**Smart Group Detection:** The addon checks if the player is already in your party or raid before sending a whisper. If someone else has already invited them, you'll see a message letting you know they're already grouped with you instead of sending an unnecessary whisper.
+
 ## How to use it
 
 **Basic Usage:**
@@ -53,6 +55,9 @@ The addon will remember your custom message across sessions.
 /invite Warriorname
 ```
 The warrior will know you're looking for them even if they're currently grouped.
+
+**Scenario: Duplicate invites**
+If you try to invite someone but another raid member has already invited them, the addon detects this and shows: "Billy's Invite Alert: PlayerName is already in your group!" - no whisper is sent.
 
 ## Compatibility
 

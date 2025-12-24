@@ -146,9 +146,56 @@ function BillyInviteAlert:HandleErrorMessage(errorMsg)
     end
 end
 
+-- Check if a player is in your group
+function BillyInviteAlert:IsPlayerInGroup(playerName)
+    if not playerName then
+        return false;
+    end
+    
+    -- Normalize the player name (remove server suffix if any)
+    local normalizedName = playerName;
+    local dashPos = string.find(playerName, "-");
+    if dashPos then
+        normalizedName = string.sub(playerName, 1, dashPos - 1);
+    end
+    
+    -- Check raid first
+    local numRaidMembers = GetNumRaidMembers();
+    if numRaidMembers > 0 then
+        for i = 1, numRaidMembers do
+            local name = UnitName("raid" .. i);
+            if name and string.lower(name) == string.lower(normalizedName) then
+                return true;
+            end
+        end
+    end
+    
+    -- Check party
+    local numPartyMembers = GetNumPartyMembers();
+    if numPartyMembers > 0 then
+        for i = 1, numPartyMembers do
+            local name = UnitName("party" .. i);
+            if name and string.lower(name) == string.lower(normalizedName) then
+                return true;
+            end
+        end
+    end
+    
+    return false;
+end
+
 -- Send the alert whisper
 function BillyInviteAlert:SendAlertWhisper(playerName)
     if not playerName or playerName == "" then
+        return;
+    end
+    
+    -- Check if player is already in our group
+    if self:IsPlayerInGroup(playerName) then
+        DEFAULT_CHAT_FRAME:AddMessage("Billy's Invite Alert: " .. playerName .. " is already in your group!", 1, 1, 0);
+        if BillyInviteAlertDB.debug then
+            DEFAULT_CHAT_FRAME:AddMessage("BIA [DEBUG]: Skipped whisper - " .. playerName .. " already in group", 0.5, 1, 1);
+        end
         return;
     end
     
